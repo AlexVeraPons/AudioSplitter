@@ -1,0 +1,426 @@
+﻿<Window x:Class="AudioSplitter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:AudioSplitter.Converters"
+        Title="Audio Splitter" Height="580" Width="980"
+        Background="#0F0F0F"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        
+        <SolidColorBrush x:Key="WindowBackground" Color="#0F0F0F"/>
+        <SolidColorBrush x:Key="SurfaceBrush" Color="#1A1A1A"/>
+        <SolidColorBrush x:Key="CardBrush" Color="#222222"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#6366F1"/>
+        <SolidColorBrush x:Key="AccentHoverBrush" Color="#FF8044E8"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#404040"/>
+        <SolidColorBrush x:Key="TextBrush" Color="#F5F5F5"/>
+        <SolidColorBrush x:Key="MutedBrush" Color="#A0A0A0"/>
+        <SolidColorBrush x:Key="SecondaryBrush" Color="#2A2A2A"/>
+        <SolidColorBrush x:Key="HoverBrush" Color="#333333"/>
+
+        <!--typography-->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+
+        <!--textBox-->
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                        Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                <Setter Property="Background" Value="{StaticResource SecondaryBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0,6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="18" Height="18" 
+                                    Background="{StaticResource SurfaceBrush}"
+                                    BorderBrush="{StaticResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="3"
+                                    Margin="0,0,8,0">
+                                <Path x:Name="CheckMark"
+                                      Data="M 2 6 L 6 10 L 14 2"
+                                      Stroke="{StaticResource AccentBrush}"
+                                      StrokeThickness="2"
+                                      Visibility="Collapsed"/>
+                            </Border>
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SectionHeader" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+        </Style>
+
+        <Style x:Key="FormLabel" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <Style x:Key="ModernButtonBase" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                           To="0.9" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                           To="1.0" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="AccentButton" TargetType="Button" BasedOn="{StaticResource ModernButtonBase}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#6366F1" Offset="0"/>
+                        <GradientStop Color="#4F46E5" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource ModernButtonBase}">
+            <Setter Property="Background" Value="{StaticResource SecondaryBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource HoverBrush}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource CardBrush}"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.3" Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Separator">
+            <Setter Property="Background" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="Margin" Value="0,16"/>
+        </Style>
+        <DataTemplate x:Key="TrackTemplate">
+            <Border Background="Transparent" 
+                    Padding="12,8" 
+                    Margin="2"
+                    CornerRadius="6">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource HoverBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding DisplayName}" 
+                               FontWeight="SemiBold"
+                               FontSize="13"/>
+                    <TextBlock Grid.Column="1" 
+                               Text="{Binding FullPath}" 
+                               Foreground="{StaticResource MutedBrush}" 
+                               Margin="16,0,0,0"
+                               FontSize="12"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <Style TargetType="ListBox">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer Padding="8">
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ProgressBar">
+            <Setter Property="Height" Value="8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Border Background="{StaticResource SurfaceBrush}"
+                                CornerRadius="4"
+                                BorderThickness="0">
+                            <Grid>
+                                <Rectangle Name="PART_Track" 
+                                         Fill="{StaticResource SurfaceBrush}"
+                                         RadiusX="4" RadiusY="4"/>
+                                <Rectangle Name="PART_Indicator"
+                                         HorizontalAlignment="Left"
+                                         RadiusX="4" RadiusY="4">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Color="#6366F1" Offset="0"/>
+                                            <GradientStop Color="#8B5CF6" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <conv:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibility"/>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.1*" />
+            <ColumnDefinition Width="0.9*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Style="{StaticResource Card}">
+            <StackPanel>
+                <TextBlock Text="Configuration" Style="{StaticResource SectionHeader}" Height="33"/>
+
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Chunk length (min):" Style="{StaticResource FormLabel}"/>
+                    <TextBox Grid.Column="1" Width="140" Text="{Binding ChunkMinutes, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Start offset (sec):" Style="{StaticResource FormLabel}"/>
+                    <TextBox Grid.Column="1" Width="140" Text="{Binding StartOffsetSeconds, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+
+                <Separator/>
+
+                <TextBlock Text="Output Settings" Style="{StaticResource SectionHeader}" Height="29"/>
+
+                <CheckBox Content="Output next to source file" IsChecked="{Binding UseSourceFolder}"/>
+
+                <Grid Margin="0,12,0,16"
+                      Visibility="{Binding UseSourceFolder, Converter={StaticResource InvertedBoolToVisibility}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Output folder:" Style="{StaticResource FormLabel}"/>
+                    <TextBox Grid.Column="1" Text="{Binding OutputFolder}" IsReadOnly="True" Margin="0,0,8,0"/>
+                    <Button Grid.Column="2" Content="Browse…" Command="{Binding BrowseOutputCommand}" 
+                            Style="{StaticResource SecondaryButton}"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="File pattern:" Style="{StaticResource FormLabel}"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBox Text="{Binding FilePattern, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Available: {base}, {series}/{series:Dn}, {part}/{part:Dn}" 
+                                   Foreground="{StaticResource MutedBrush}" 
+                                   Margin="0,6,0,0"
+                                   FontSize="11"/>
+                    </StackPanel>
+                </Grid>
+
+                <CheckBox Content="Replace title tag with filename" IsChecked="{Binding ReplaceTitle}"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" Style="{StaticResource Card}">
+            <DockPanel>
+                <Border DockPanel.Dock="Top" 
+                        Background="{StaticResource SurfaceBrush}"
+                        CornerRadius="8"
+                        Padding="16,12"
+                        Margin="0,0,0,16">
+                    <Grid>
+                        <TextBlock Text="🎵 Audio Files" 
+                                   Style="{StaticResource SectionHeader}"
+                                   Margin="0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="➕ Add Files" Command="{Binding AddFilesCommand}"
+                                    Style="{StaticResource SecondaryButton}"/>
+                            <Button Content="Clear" Command="{Binding ClearFilesCommand}" 
+                                    Style="{StaticResource SecondaryButton}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <ListBox ItemsSource="{Binding TracksCollection}"
+                         ItemTemplate="{StaticResource TrackTemplate}"/>
+            </DockPanel>
+        </Border>
+        <Border Grid.Row="1" Grid.ColumnSpan="2" 
+                Padding="24" 
+                Margin="0,20,0,0"
+                BorderBrush="{StaticResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="12"
+                Background="{StaticResource CardBrush}">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" ShadowDepth="3" Opacity="0.2"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Split" 
+                        Width="180" 
+                        Height="44"
+                        Command="{Binding SplitCommand}"
+                        Style="{StaticResource AccentButton}"/>
+
+                <StackPanel Grid.Column="1" Margin="24,0,0,0" VerticalAlignment="Center">
+                    <ProgressBar Minimum="0" 
+                                Maximum="100" 
+                                Value="{Binding Progress}" Height="36"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioSplitter", "AudioSplitter.csproj", "{6338B655-55EB-1965-4272-20AC6C636DFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6338B655-55EB-1965-4272-20AC6C636DFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6338B655-55EB-1965-4272-20AC6C636DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6338B655-55EB-1965-4272-20AC6C636DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6338B655-55EB-1965-4272-20AC6C636DFC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C012269-19B3-44AE-A434-5D838212C174}
+	EndGlobalSection
+EndGlobal

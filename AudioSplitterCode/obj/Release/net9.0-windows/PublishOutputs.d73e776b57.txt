@@ -1,0 +1,8 @@
+C:\Users\alexa\Desktop\deploy\AudioSplitter.exe
+C:\Users\alexa\Desktop\deploy\ffmpeg\win-x64\ffmpeg.exe
+C:\Users\alexa\Desktop\deploy\ffmpeg\win-x64\LICENSE
+C:\Users\alexa\Desktop\deploy\AudioSplitter.dll
+C:\Users\alexa\Desktop\deploy\AudioSplitter.deps.json
+C:\Users\alexa\Desktop\deploy\AudioSplitter.runtimeconfig.json
+C:\Users\alexa\Desktop\deploy\AudioSplitter.pdb
+C:\Users\alexa\Desktop\deploy\Ookii.Dialogs.Wpf.dll

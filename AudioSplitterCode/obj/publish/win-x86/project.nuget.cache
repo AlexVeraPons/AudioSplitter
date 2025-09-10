@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "bF9w9kjTmKc=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\alexa\\Desktop\\New folder\\AudioSplitter\\AudioSplitter.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\alexa\\.nuget\\packages\\ookii.dialogs.wpf\\5.0.1\\ookii.dialogs.wpf.5.0.1.nupkg.sha512",
+    "C:\\Users\\alexa\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\9.0.6\\microsoft.netcore.app.runtime.win-x86.9.0.6.nupkg.sha512",
+    "C:\\Users\\alexa\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\9.0.6\\microsoft.windowsdesktop.app.runtime.win-x86.9.0.6.nupkg.sha512",
+    "C:\\Users\\alexa\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\9.0.6\\microsoft.aspnetcore.app.runtime.win-x86.9.0.6.nupkg.sha512"
+  ],
+  "logs": []
+}

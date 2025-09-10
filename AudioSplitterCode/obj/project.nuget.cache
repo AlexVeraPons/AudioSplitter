@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Yui62TKHRS8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\alexa\\Desktop\\AudioSplitter\\AudioSplitter\\AudioSplitterCode\\AudioSplitter.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\alexa\\.nuget\\packages\\ookii.dialogs.wpf\\5.0.1\\ookii.dialogs.wpf.5.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
